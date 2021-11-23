@@ -1,0 +1,32 @@
+logging:
+  level:
+    root: DEBUG
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: httpbin
+          uri: http://httpbin.org:80
+          predicates:
+            - Path=/httpbin/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: httpBinCircuitBreaker
+            - RewritePath=/httpbin(?<httpbinurl>/?.*), $\{httpbinurl}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      httpBinCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+    timelimiter:
+      instances:
+        httpBinCircuitBreaker:
+          timeoutDuration: 2s
+
+
+
