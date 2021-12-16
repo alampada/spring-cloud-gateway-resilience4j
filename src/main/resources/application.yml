@@ -16,17 +16,13 @@ spring:
                 name: httpBinCircuitBreaker
             - RewritePath=/httpbin(?<httpbinurl>/?.*), $\{httpbinurl}
 
-resilience4j:
-  circuitbreaker:
-    instances:
-      httpBinCircuitBreaker:
-        registerHealthIndicator: true
-        slidingWindowSize: 10
-        minimumNumberOfCalls: 10
-    timelimiter:
-      instances:
-        httpBinCircuitBreaker:
-          timeoutDuration: 2s
-
-
-
+resilience4j.circuitbreaker:
+  instances:
+    httpBinCircuitBreaker:
+      registerHealthIndicator: true
+      slidingWindowSize: 10
+      minimumNumberOfCalls: 10
+resilience4j.timelimiter:
+  instances:
+    httpBinCircuitBreaker:
+      timeoutDuration: 2s
